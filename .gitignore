@@ -5,3 +5,5 @@
 .env
 .DS_Store
 /vendor
+.htaccess
+.user.ini
