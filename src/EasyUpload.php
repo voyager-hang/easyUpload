@@ -2,7 +2,7 @@
 
 namespace EasyUpload;
 
-use EasyUpload\config\config;
+use EasyUpload\config\Config;
 use EasyUpload\library\ossUpload;
 use EasyUpload\library\QiNiuUpload;
 use EasyUpload\library\SysUpload;
@@ -27,7 +27,7 @@ class EasyUpload
      */
     public static function Instance($newObj = false)
     {
-        $defConf = config::def();
+        $defConf = Config::def();
         $config = $defConf;
         $tpCof = '\think\facade\Config';
         if (class_exists($tpCof)) {

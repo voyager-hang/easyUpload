@@ -2,7 +2,7 @@
 
 namespace EasyUpload\tool;
 
-use EasyUpload\config\config;
+use EasyUpload\config\Config;
 use EasyUpload\file\File;
 use Exception;
 
@@ -50,7 +50,7 @@ class Util
     public static function checkSize($file, $size)
     {
         if ($file->sizeKb > $size) {
-            throw new Exception(config::get('tips_message', 'oversize_size'));
+            throw new Exception(Config::get('tips_message', 'oversize_size'));
         }
     }
 
@@ -60,10 +60,10 @@ class Util
     public static function checkMime($file, $mimes)
     {
         if (!is_array($mimes)) {
-            throw new Exception(config::get('tips_message', 'mime_error'));
+            throw new Exception(Config::get('tips_message', 'mime_error'));
         }
         if (!in_array($file->type, $mimes)) {
-            throw new Exception(config::get('tips_message', 'mime_not'));
+            throw new Exception(Config::get('tips_message', 'mime_not'));
         }
     }
 
@@ -78,10 +78,10 @@ class Util
             $ext = '';
         }
         if (!is_array($extArr)) {
-            throw new Exception(config::get('tips_message', 'ext_error'));
+            throw new Exception(Config::get('tips_message', 'ext_error'));
         }
         if (!in_array($ext, $extArr)) {
-            throw new Exception(config::get('tips_message', 'ext_not'));
+            throw new Exception(Config::get('tips_message', 'ext_not'));
         }
     }
 

@@ -2,7 +2,7 @@
 
 namespace EasyUpload\config;
 const DS = DIRECTORY_SEPARATOR;
-class config
+class Config
 {
     private static $defCof = [
         //Mimes验证

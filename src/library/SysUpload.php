@@ -2,7 +2,7 @@
 
 namespace EasyUpload\library;
 
-use EasyUpload\config\config;
+use EasyUpload\config\Config;
 use EasyUpload\interfaces\Upload;
 use EasyUpload\tool\Util;
 use Exception;
@@ -61,12 +61,12 @@ class SysUpload extends BaseUpload implements Upload
             $formalPath = $this->imgPath;
         }
         if (!is_file($filePath)) {
-            throw new Exception(config::get('tips_message', 'move_empty_file'));
+            throw new Exception(Config::get('tips_message', 'move_empty_file'));
         }
         $savePath = str_ireplace($this->tempDir, $formalPath, $filePath);
         Util::mkDirs(dirname($savePath));
         if (!copy($filePath, $savePath)) {
-            throw new Exception(config::get('tips_message', 'upload_write_error'));
+            throw new Exception(Config::get('tips_message', 'upload_write_error'));
         }
         $this->del($filePath);
     }

@@ -4,7 +4,7 @@
 namespace EasyUpload\library;
 
 
-use EasyUpload\config\config;
+use EasyUpload\config\Config;
 use EasyUpload\tool\Util;
 use Exception;
 
@@ -57,7 +57,7 @@ class BaseUpload
 
     public function __construct($config = [])
     {
-        $defConf = config::def();
+        $defConf = Config::def();
         if (empty($config)) {
             $config = $defConf;
             $tpCof = '\think\facade\Config';
@@ -467,7 +467,7 @@ class BaseUpload
         Util::mkDirs($path . $filePath);
         $savePath = $path . $filePath . DIRECTORY_SEPARATOR . $fileName;
         if (!move_uploaded_file($fileObj->getTmpName(), $savePath)) {
-            throw new Exception(config::get('tips_message', 'upload_write_error'));
+            throw new Exception(Config::get('tips_message', 'upload_write_error'));
         }
         $fileObj->setSaveName($savePath);
         $fileObj->setResultPath($this->getResPath($fileObj));
