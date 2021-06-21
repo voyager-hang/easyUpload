@@ -7,3 +7,5 @@
 /vendor
 .htaccess
 .user.ini
+/temp
+/uploads

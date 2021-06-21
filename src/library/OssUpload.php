@@ -4,8 +4,14 @@
 namespace EasyUpload\library;
 
 
-class qiNiuUpload implements \EasyUpload\interfaces\Upload
+use EasyUpload\interfaces\Upload;
+
+class OssUpload extends BaseUpload implements Upload
 {
+    public function __construct($config = [])
+    {
+        parent::__construct($config);
+    }
 
     public function imgUpload($formName = 'file')
     {
