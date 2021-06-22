@@ -18,6 +18,11 @@ class Util
         }
         if (is_array($fileMsg['name'])) {
             foreach ($fileMsg['name'] as $k => $fn) {
+                if (strpos($fn, '.') !== false) {
+                    $ext = substr(strrchr($fn, '.'), 1);
+                } else {
+                    $ext = '';
+                }
                 $fileObj = new File();
                 $fileObj->name = $fn;
                 $fileObj->type = $fileMsg['type'][$k];
@@ -26,10 +31,16 @@ class Util
                 $fileObj->size = $fileMsg['size'][$k];
                 $fileObj->sizeKb = $fileObj->size / 1024;
                 $fileObj->sizeMb = $fileObj->sizeKb / 1024;
+                $fileObj->ext = $ext;
                 $fileArray[] = $fileObj;
             }
         } else {
             $multiple = false;
+            if (strpos($fileMsg['name'], '.') !== false) {
+                $ext = substr(strrchr($fileMsg['name'], '.'), 1);
+            } else {
+                $ext = '';
+            }
             $fileObj = new File();
             $fileObj->name = $fileMsg['name'];
             $fileObj->type = $fileMsg['type'];
@@ -38,6 +49,7 @@ class Util
             $fileObj->size = $fileMsg['size'];
             $fileObj->sizeKb = $fileObj->size / 1024;
             $fileObj->sizeMb = $fileObj->sizeKb / 1024;
+            $fileObj->ext = $ext;
             $fileArray = $fileObj;
         }
         // [是否多文件，文件对象]
@@ -72,11 +84,7 @@ class Util
      */
     public static function checkExt($file, $extArr)
     {
-        if (strpos($file->getName(), '.') !== false) {
-            $ext = substr(strrchr($file->name, '.'), 1);
-        } else {
-            $ext = '';
-        }
+        $ext = $file->getExt();
         if (!is_array($extArr)) {
             throw new Exception(Config::get('tips_message', 'ext_error'));
         }
@@ -97,5 +105,12 @@ class Util
     public static function mkDirs($dir)
     {
         return is_dir($dir) || self::mkDirs(dirname($dir)) && mkdir($dir);
+    }
+
+    public static function dump($data)
+    {
+        echo '<pre>';
+        var_dump($data);
+        echo '</pre>' . PHP_EOL . PHP_EOL;
     }
 }

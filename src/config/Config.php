@@ -8,7 +8,7 @@ class Config
         //Mimes验证
         'mimes' => false,
         //上传oss(阿里云oss)，server(服务器 默认)，qn(七牛)
-        'upload_server' => 'server',
+        'upload_server' => 'qn',
         //命名方式  md5(md5), dateMd5(日期md5 默认) , original(原名) , dateOriginal(日期原名)
         'give_name' => 'dateMd5',
         //临时目录 false 关闭
@@ -53,7 +53,7 @@ class Config
             'key_id' => '',  // 您的Access Key ID
             'key_secret' => '',  // 您的Access Key Secret
             'network_protocol' => 'http',  // 阿里云oss 外网协议 默认http
-            'endpoint' => '',  // 阿里云oss 外网地址endpoint 不带Bucket名称
+            'endpoint' => 'oss-cn-shenzhen.aliyuncs.com',  // 阿里云oss 外网地址endpoint 不带Bucket名称
             'bucket' => '',  // Bucket名称
             'http_host' => '', // 自定义域名
         ],
@@ -63,8 +63,10 @@ class Config
             'access_key' => '',// 您的Access Key
             'secret_key' => '',// 您的Secret Key
             'bucket' => '',// Bucket名称
-            'http_host' => '',// 自定义域名
+            'http_host' => '',// 外链域名
+            'expires' => 3600 // 上传超时
         ],
+        // 错误提示信息，使用配置方便制作多语言
         'tips_message' => [
             'empty_images' => '没有图片被上传!',
             'empty_file' => '没有文件被上传!',
@@ -75,6 +77,7 @@ class Config
             'ext_not' => '上传文件后缀名不允许!',
             'upload_write_error' => '移动文件失败',
             'move_empty_file' => '未找到源文件',
+            'del_file_max_num' => '每次最多不能超过1000个',
         ]
     ];
 
@@ -90,5 +93,10 @@ class Config
             $val = $val[$v];
         }
         return $val;
+    }
+
+    public static function setCof($defCof)
+    {
+        self::$defCof = $defCof;
     }
 }

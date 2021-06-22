@@ -3,7 +3,7 @@
 namespace EasyUpload;
 
 use EasyUpload\config\Config;
-use EasyUpload\library\ossUpload;
+use EasyUpload\library\OssUpload;
 use EasyUpload\library\QiNiuUpload;
 use EasyUpload\library\SysUpload;
 
@@ -16,26 +16,36 @@ class EasyUpload
     private static $sysUpload;
     private static $qnUpload;
     private static $ossUpload;
+    private static $config;
+
+    public static function setConfig($config)
+    {
+        self::$config = $config;
+    }
 
     /**
      * @desc:获取上传实单例
      * @param false $newObj
-     * @return ossUpload|QiNiuUpload|SysUpload
+     * @return OssUpload|QiNiuUpload|SysUpload
      * @author: lyh
      * @date: 2021/6/21
      * @time: 6:18 下午
      */
     public static function Instance($newObj = false)
     {
-        $defConf = Config::def();
-        $config = $defConf;
-        $tpCof = '\think\facade\Config';
-        if (class_exists($tpCof)) {
-            $cof = $tpCof::pull('EasyUpload');
-            if (!empty($cof)) {
-                $config = $cof;
+        $config = self::$config;
+        if (empty($config) || !is_array($config)) {
+            $defConf = Config::def();
+            $config = $defConf;
+            $tpCof = '\think\facade\Config';
+            if (class_exists($tpCof)) {
+                $cof = $tpCof::pull('EasyUpload');
+                if (!empty($cof)) {
+                    $config = $cof;
+                }
             }
         }
+        Config::setCof($config);
         //上传oss(阿里云oss)，server(服务器 默认)，qn(七牛)
         switch ($config['upload_server']) {
             case "oss":

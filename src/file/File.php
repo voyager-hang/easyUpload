@@ -13,6 +13,7 @@ class File
     public $sizeMb;
     public $saveName;
     public $resultPath;
+    public $ext;
 
     /**
      * @return mixed
@@ -156,6 +157,22 @@ class File
     public function setResultPath($resultPath)
     {
         $this->resultPath = $resultPath;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getExt()
+    {
+        return $this->ext;
+    }
+
+    /**
+     * @param mixed $ext
+     */
+    public function setExt($ext)
+    {
+        $this->ext = $ext;
     }
 
 }

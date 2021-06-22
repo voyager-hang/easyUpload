@@ -485,15 +485,11 @@ class BaseUpload
     public function getFileName($fileObj)
     {
         $filePath = '';
-        if (strpos($fileObj->name, '.') !== false) {
-            $ext = '.' . substr(strrchr($fileObj->name, '.'), 1);
-        } else {
-            $ext = '';
-        }
+        $ext = $fileObj->getExt();
         switch ($this->giveName) {
             case 'dateMd5':
                 $filePath = DIRECTORY_SEPARATOR . date('Ymd');
-                $fileName = md5(serialize($fileObj) . rand(1000, 9999)) . $ext;
+                $fileName = md5(serialize($fileObj) . rand(1000, 9999)) . '.' . $ext;
                 break;
             case 'original':
                 $fileName = $fileObj->name;
@@ -503,7 +499,7 @@ class BaseUpload
                 $fileName = $fileObj->name;
                 break;
             default:
-                $fileName = md5(serialize($fileObj) . rand(1000, 9999)) . $ext;
+                $fileName = md5(serialize($fileObj) . rand(1000, 9999)) . '.' . $ext;
         }
         return [$filePath, $fileName];
     }
