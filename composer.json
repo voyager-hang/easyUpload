@@ -2,6 +2,10 @@
     "name": "yuanhang/easy-upload",
     "description": "Integrate Qiniu and Ali OSS",
     "type": "library",
+    "keywords": [
+        "oss",
+        "qiniu"
+    ],
     "require": {
         "php": ">=5.6.0",
         "qiniu/php-sdk": ">=7.3",
