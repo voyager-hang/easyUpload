@@ -18,7 +18,7 @@
 使用composer安装
 
 ~~~
-composer create-project topthink/think tp
+composer require yuanhang/easy-upload
 ~~~
 
 设置配置
