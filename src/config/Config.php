@@ -8,7 +8,7 @@ class Config
         //Mimes验证
         'mimes' => false,
         //上传oss(阿里云oss)，server(服务器 默认)，qn(七牛)
-        'upload_server' => 'qn',
+        'upload_server' => 'server',
         //命名方式  md5(md5), dateMd5(日期md5 默认) , original(原名) , dateOriginal(日期原名)
         'give_name' => 'dateMd5',
         //临时目录 false 关闭
