@@ -21,6 +21,8 @@
 composer require yuanhang/easy-upload
 ~~~
 
+## 使用
+
 设置配置
 
 ~~~
@@ -65,6 +67,46 @@ $upload->del('http://www.d.com/temp/a.png');
 $upload->del('/temp/a.png');
 $upload->del(['/temp/a.png','http://www.d.com/temp/a.png']);
 ~~~
+
+## 返回值
+
+单文件上传成功
+~~~
+ {
+    "status": true,
+    "success": "/temp/20210622/a.gif",
+    "error": ""
+ }
+~~~
+
+单文件上传失败
+~~~
+ {
+    "status": false,
+    "success": "",
+    "error": "上传文件超过允许的最大值!"
+ }
+~~~
+
+多文件上传成功
+~~~
+ {
+    "status": true,
+    "success": ["/temp/20210622/a.gif", "/temp/20210622/b.png"],
+    "error": []
+ }
+~~~
+
+多文件上传失败
+~~~
+ {
+    "status": false,
+    "success": [],
+    "error": ["上传文件超过允许的最大值!", "上传文件超过允许的最大值!"]
+ }
+~~~
+
+## 其他方法均以抛出异常方式返回
 
 ## 目录结构
 
