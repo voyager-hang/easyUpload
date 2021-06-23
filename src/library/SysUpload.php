@@ -40,15 +40,24 @@ class SysUpload extends BaseUpload implements Upload
                 if (!$absolutePath) {
                     $filePath = '.' . $this->absolutePath($path);
                 }
-                $this->moveFileToPath($filePath, $img);
+                try {
+                    $this->moveFileToPath($filePath, $img);
+                } catch (Exception $e) {
+                    return $e->getMessage();
+                }
             }
         } else {
             $filePath = $pathData;
             if (!$absolutePath) {
                 $filePath = '.' . $this->absolutePath($pathData);
             }
-            $this->moveFileToPath($filePath, $img);
+            try {
+                $this->moveFileToPath($filePath, $img);
+            } catch (Exception $e) {
+                return $e->getMessage();
+            }
         }
+        return true;
     }
 
     /**
