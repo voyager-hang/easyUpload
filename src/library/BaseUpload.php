@@ -238,11 +238,15 @@ class BaseUpload
      */
     public function setTempDir($tempDir)
     {
-        if (substr($tempDir, 0, strlen('.')) === '.') {
-            $tempDir = ltrim($tempDir, '.');
+        if (empty($tempDir)) {
+            $this->tempDir = false;
+        } else {
+            if (substr($tempDir, 0, strlen('.')) === '.') {
+                $tempDir = ltrim($tempDir, '.');
+            }
+            $tempDir = ltrim(ltrim($tempDir, '\\'), '/');
+            $this->tempDir = '.' . DIRECTORY_SEPARATOR . $tempDir;
         }
-        $tempDir = ltrim(ltrim($tempDir, '\\'), '/');
-        $this->tempDir = '.' . DIRECTORY_SEPARATOR . $tempDir;
     }
 
     /**
