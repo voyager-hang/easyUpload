@@ -238,7 +238,11 @@ class BaseUpload
      */
     public function setTempDir($tempDir)
     {
-        $this->tempDir = $tempDir;
+        if (substr($tempDir, 0, strlen('.')) === '.') {
+            $tempDir = ltrim($tempDir, '.');
+        }
+        $tempDir = ltrim(ltrim($tempDir, '\\'), '/');
+        $this->tempDir = '.' . DIRECTORY_SEPARATOR . $tempDir;
     }
 
     /**
@@ -254,7 +258,11 @@ class BaseUpload
      */
     public function setImgPath($imgPath)
     {
-        $this->imgPath = $imgPath;
+        if (substr($imgPath, 0, strlen('.')) === '.') {
+            $imgPath = ltrim($imgPath, '.');
+        }
+        $imgPath = ltrim(ltrim($imgPath, '\\'), '/');
+        $this->imgPath = '.' . DIRECTORY_SEPARATOR . $imgPath;
     }
 
     /**
@@ -318,7 +326,11 @@ class BaseUpload
      */
     public function setFilePath($filePath)
     {
-        $this->filePath = $filePath;
+        if (substr($filePath, 0, strlen('.')) === '.') {
+            $filePath = ltrim($filePath, '.');
+        }
+        $filePath = ltrim(ltrim($filePath, '\\'), '/');
+        $this->filePath = '.' . DIRECTORY_SEPARATOR . $filePath;
     }
 
     /**
