@@ -29,11 +29,18 @@ class SysUpload extends BaseUpload implements Upload
     }
 
     /**
-     * @throws Exception
+     * @param $pathData
+     * @param bool $img
+     * @param false $absolutePath
+     * @return array|string
+     * @author: lyh
+     * @date: 2021/6/23
+     * @time: 3:50 下午
      */
     public function moveTmpToPath($pathData, $img = true, $absolutePath = false)
     {
         // TODO: Implement moveTmpToPath() method.
+        $savePath = [];
         if (is_array($pathData)) {
             foreach ($pathData as $path) {
                 $filePath = $path;
@@ -41,9 +48,9 @@ class SysUpload extends BaseUpload implements Upload
                     $filePath = '.' . $this->absolutePath($path);
                 }
                 try {
-                    $this->moveFileToPath($filePath, $img);
+                    $savePath[] = $this->moveFileToPath($filePath, $img);
                 } catch (Exception $e) {
-                    return $e->getMessage();
+                    return $pathData;
                 }
             }
         } else {
@@ -52,16 +59,22 @@ class SysUpload extends BaseUpload implements Upload
                 $filePath = '.' . $this->absolutePath($pathData);
             }
             try {
-                $this->moveFileToPath($filePath, $img);
+                $savePath = $this->moveFileToPath($filePath, $img);
             } catch (Exception $e) {
-                return $e->getMessage();
+                return $pathData;
             }
         }
-        return true;
+        return $savePath;
     }
 
     /**
+     * @param $filePath
+     * @param $img
+     * @return array|string
      * @throws Exception
+     * @author: lyh
+     * @date: 2021/6/23
+     * @time: 3:49 下午
      */
     private function moveFileToPath($filePath, $img)
     {
@@ -78,6 +91,7 @@ class SysUpload extends BaseUpload implements Upload
             throw new Exception(Config::get('tips_message', 'upload_write_error'));
         }
         $this->del($filePath);
+        return $this->absolutePath($savePath);
     }
 
     public function httpPath($path)
