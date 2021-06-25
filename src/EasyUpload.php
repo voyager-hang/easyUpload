@@ -39,7 +39,11 @@ class EasyUpload
             $config = $defConf;
             $tpCof = '\think\facade\Config';
             if (class_exists($tpCof)) {
-                $cof = $tpCof::pull('EasyUpload');
+                try {
+                    $cof = $tpCof::pull('EasyUpload');
+                } catch (\Exception $e) {
+                    $cof = $tpCof::get('EasyUpload');
+                }
                 if (!empty($cof)) {
                     $config = $cof;
                 }
