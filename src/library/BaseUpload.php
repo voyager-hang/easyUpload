@@ -595,6 +595,8 @@ class BaseUpload
         } else if (strpos($path, 'http://') === 0) {
             $http = 'http://';
             $path = str_ireplace('http://', '', $path);
+        } else {
+            return '';
         }
         $pathArr = explode('/', $path);
         return $http . reset($pathArr);
