@@ -32,6 +32,19 @@ class OssUpload extends BaseUpload implements Upload
     public function moveTmpToPath($path, $img = true, $absolutePath = false)
     {
         // TODO: Implement moveTmpToPath() method.
+        $resData = [];
+        if (is_array($path)) {
+            foreach ($path as $p) {
+                $resData[] = $this->moveFileToPath($p, $img, $absolutePath);
+            }
+            return $resData;
+        } else {
+            return $this->moveFileToPath($path, $img, $absolutePath);
+        }
+    }
+
+    private function moveFileToPath($path, $img = true, $absolutePath = false)
+    {
         $temp = trim(trim($this->tempDir, '.'), '/\\');
         if (empty($path) || strpos($path, $temp) === false) {
             $savePath = $path;
@@ -120,7 +133,7 @@ class OssUpload extends BaseUpload implements Upload
             }
             $path = trim(trim($path, '\\'), '/');
         }
-        $path = ltrim($this->absolutePath($path),'/');
+        $path = ltrim($this->absolutePath($path), '/');
         $result = ['status' => true, 'success' => '', 'error' => ''];
         if ($this->multiple) {
             $result['success'] = [];

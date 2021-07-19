@@ -32,6 +32,19 @@ class QiNiuUpload extends BaseUpload implements Upload
     public function moveTmpToPath($path, $img = true, $absolutePath = false)
     {
         // TODO: Implement moveTmpToPath() method.
+        $resData = [];
+        if (is_array($path)) {
+            foreach ($path as $p) {
+                $resData[] = $this->moveFileToPath($p, $img, $absolutePath);
+            }
+            return $resData;
+        } else {
+            return $this->moveFileToPath($path, $img, $absolutePath);
+        }
+    }
+
+    private function moveFileToPath($path, $img = true, $absolutePath = false)
+    {
         $temp = trim(trim($this->tempDir, '.'), '/\\');
         if (empty($path) || strpos($path, $temp) === false) {
             $savePath = $path;
