@@ -120,7 +120,7 @@ class OssUpload extends BaseUpload implements Upload
             }
             $path = trim(trim($path, '\\'), '/');
         }
-
+        $path = ltrim($this->absolutePath($path),'/');
         $result = ['status' => true, 'success' => '', 'error' => ''];
         if ($this->multiple) {
             $result['success'] = [];
