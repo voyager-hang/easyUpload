@@ -521,6 +521,7 @@ class BaseUpload
             default:
                 $fileName = md5(serialize($fileObj) . rand(1000, 9999)) . '.' . $ext;
         }
+        $filePath = str_replace("\\", "/", $filePath);
         return [$filePath, $fileName];
     }
 
