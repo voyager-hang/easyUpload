@@ -32,6 +32,11 @@ class Util
                 $fileObj->sizeKb = $fileObj->size / 1024;
                 $fileObj->sizeMb = $fileObj->sizeKb / 1024;
                 $fileObj->ext = $ext;
+                $imgInfo = getimagesize($fileObj->tmpName);
+                if (!empty($imgInfo['0']) && !empty($imgInfo['1'])) {
+                    $fileObj->width = $imgInfo['0'];
+                    $fileObj->height = $imgInfo['1'];
+                }
                 $fileArray[] = $fileObj;
             }
         } else {
@@ -50,6 +55,11 @@ class Util
             $fileObj->sizeKb = $fileObj->size / 1024;
             $fileObj->sizeMb = $fileObj->sizeKb / 1024;
             $fileObj->ext = $ext;
+            $imgInfo = getimagesize($fileObj->tmpName);
+            if (!empty($imgInfo['0']) && !empty($imgInfo['1'])) {
+                $fileObj->width = $imgInfo['0'];
+                $fileObj->height = $imgInfo['1'];
+            }
             $fileArray = $fileObj;
         }
         // [是否多文件，文件对象]

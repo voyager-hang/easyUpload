@@ -8,6 +8,8 @@ class File
     public $type;
     public $tmpName;
     public $error;
+    public $width = 0;
+    public $height = 0;
     public $size;
     public $sizeKb;
     public $sizeMb;
@@ -77,6 +79,38 @@ class File
     public function setError($error)
     {
         $this->error = $error;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWidth()
+    {
+        return $this->width;
+    }
+
+    /**
+     * @param mixed $width
+     */
+    public function setWidth($width)
+    {
+        $this->size = $width;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHeight()
+    {
+        return $this->height;
+    }
+
+    /**
+     * @param mixed $height
+     */
+    public function setHeight($height)
+    {
+        $this->size = $height;
     }
 
     /**
