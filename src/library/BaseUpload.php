@@ -310,15 +310,20 @@ class BaseUpload
     }
 
     /**
-     * @param mixed $imgPath
+     * @param $filePath
+     * @param false $absolute
      */
-    public function setImgPath($imgPath)
+    public function setImgPath($filePath, $absolute = false)
     {
-        if (substr($imgPath, 0, strlen('.')) === '.') {
-            $imgPath = ltrim($imgPath, '.');
+        if ($absolute) {
+            $this->filePath = $filePath;
+        } else {
+            if (substr($filePath, 0, strlen('.')) === '.') {
+                $filePath = ltrim($filePath, '.');
+            }
+            $filePath = ltrim(ltrim($filePath, '\\'), '/');
+            $this->filePath = '.' . DIRECTORY_SEPARATOR . $filePath;
         }
-        $imgPath = ltrim(ltrim($imgPath, '\\'), '/');
-        $this->imgPath = '.' . DIRECTORY_SEPARATOR . $imgPath;
     }
 
     /**
@@ -378,15 +383,20 @@ class BaseUpload
     }
 
     /**
-     * @param mixed $filePath
+     * @param $filePath
+     * @param false $absolute
      */
-    public function setFilePath($filePath)
+    public function setFilePath($filePath, $absolute = false)
     {
-        if (substr($filePath, 0, strlen('.')) === '.') {
-            $filePath = ltrim($filePath, '.');
+        if ($absolute) {
+            $this->filePath = $filePath;
+        } else {
+            if (substr($filePath, 0, strlen('.')) === '.') {
+                $filePath = ltrim($filePath, '.');
+            }
+            $filePath = ltrim(ltrim($filePath, '\\'), '/');
+            $this->filePath = '.' . DIRECTORY_SEPARATOR . $filePath;
         }
-        $filePath = ltrim(ltrim($filePath, '\\'), '/');
-        $this->filePath = '.' . DIRECTORY_SEPARATOR . $filePath;
     }
 
     /**
