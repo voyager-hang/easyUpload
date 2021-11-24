@@ -136,6 +136,54 @@ class BaseUpload
     /**
      * @return mixed
      */
+    public function getMultiple()
+    {
+        return $this->multiple;
+    }
+
+    /**
+     * @param mixed $multiple
+     */
+    public function setMultiple($multiple)
+    {
+        $this->multiple = $multiple;
+    }
+
+    /**
+     * @return mixed|string
+     */
+    public function getUploadServer()
+    {
+        return $this->uploadServer;
+    }
+
+    /**
+     * @param mixed|string $uploadServer
+     */
+    public function setUploadServer($uploadServer)
+    {
+        $this->uploadServer = $uploadServer;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTipsMessage()
+    {
+        return $this->tipsMessage;
+    }
+
+    /**
+     * @param mixed $tipsMessage
+     */
+    public function setTipsMessage($tipsMessage)
+    {
+        $this->tipsMessage = $tipsMessage;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getFileObjArr()
     {
         return $this->fileObjArr;
