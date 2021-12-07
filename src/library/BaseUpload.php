@@ -316,13 +316,13 @@ class BaseUpload
     public function setImgPath($filePath, $absolute = false)
     {
         if ($absolute) {
-            $this->filePath = $filePath;
+            $this->imgPath = $filePath;
         } else {
             if (substr($filePath, 0, strlen('.')) === '.') {
                 $filePath = ltrim($filePath, '.');
             }
             $filePath = ltrim(ltrim($filePath, '\\'), '/');
-            $this->filePath = '.' . DIRECTORY_SEPARATOR . $filePath;
+            $this->imgPath = '.' . DIRECTORY_SEPARATOR . $filePath;
         }
     }
 
