@@ -85,7 +85,7 @@ class SysUpload extends BaseUpload implements Upload
         if (!is_file($filePath)) {
             throw new Exception(Config::get('tips_message', 'move_empty_file'));
         }
-        $savePath = str_ireplace($this->tempDir, $formalPath, $filePath);
+        $savePath = str_ireplace(trim($this->tempDir,'.'), $formalPath, $filePath);
         Util::mkDirs(dirname($savePath));
         if (!copy($filePath, $savePath)) {
             throw new Exception(Config::get('tips_message', 'upload_write_error'));
