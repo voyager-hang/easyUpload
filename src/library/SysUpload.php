@@ -6,6 +6,7 @@ use EasyUpload\config\Config;
 use EasyUpload\interfaces\Upload;
 use EasyUpload\tool\Util;
 use Exception;
+use const EasyUpload\config\DS;
 
 class SysUpload extends BaseUpload implements Upload
 {
@@ -85,7 +86,8 @@ class SysUpload extends BaseUpload implements Upload
         if (!is_file($filePath)) {
             throw new Exception(Config::get('tips_message', 'move_empty_file'));
         }
-        $savePath = str_ireplace(trim($this->tempDir,'.'), $formalPath, $filePath);
+        $savePath = str_ireplace(trim($this->tempDir, '.'), '', $filePath);
+        $savePath = rtrim($formalPath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . trim($savePath, DIRECTORY_SEPARATOR);
         Util::mkDirs(dirname($savePath));
         if (!copy($filePath, $savePath)) {
             throw new Exception(Config::get('tips_message', 'upload_write_error'));
