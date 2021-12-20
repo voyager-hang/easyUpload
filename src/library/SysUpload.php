@@ -97,10 +97,10 @@ class SysUpload extends BaseUpload implements Upload
         return $this->absolutePath($savePath);
     }
 
-    public function httpPath($path)
+    public function httpPath($path, $suffix = '', $emptyRes = '')
     {
         // TODO: Implement httpPath() method.
-        return $path;
+        return $path . $suffix;
     }
 
     public function del($path)

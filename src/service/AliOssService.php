@@ -236,15 +236,15 @@ class AliOssService
      * @name:
      * @desc:获取直接访问的地址
      * @param $path
-     * @param string $uffix
+     * @param string $suffix
      * @return array|false|mixed|string
      * @author: lyh
      * @date: 2021/6/22
      * @time: 2:59 下午
      */
-    public function httpPath($path, $uffix = '')
+    public function httpPath($path, $suffix = '', $emptyRes = '')
     {
-        if (!is_array($path) && empty($path)) return false;
+        if (!is_array($path) && empty($path)) return $emptyRes;
         $config = $this->config;
         $bucket = empty(self::$bucket) ? $config['bucket'] : self::$bucket;
         if (is_array($path)) {
@@ -252,9 +252,9 @@ class AliOssService
                 if (strpos($url, 'http') !== 0) {
                     $url = '/' . ltrim($url, '/');
                     $host = empty($this->config['http_host']) ? $config['network_protocol'] . '://' . $bucket . '.' . $config['endpoint'] : $this->config['http_host'];
-                    $path[$key] = $host . $url . $uffix;
+                    $path[$key] = $host . $url . $suffix;
                 } else {
-                    $path[$key] .= $uffix;
+                    $path[$key] .= $suffix;
                 }
             }
         } else {
@@ -262,7 +262,7 @@ class AliOssService
             if (strpos($path, 'http') !== 0) {
                 $path = '/' . ltrim($path, '/');
                 $host = empty($this->config['http_host']) ? $config['network_protocol'] . '://' . $bucket . '.' . $config['endpoint'] : $this->config['http_host'];
-                $path = $host . $path . $uffix;;
+                $path = $host . $path . $suffix;;
             }
         }
         return $path;
