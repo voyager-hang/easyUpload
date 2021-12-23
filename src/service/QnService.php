@@ -46,7 +46,6 @@ class QnService
 
     /**设置储存目录
      * @param $bucket
-     * @author: lyh
      * @Date：2019/11/27
      * @Time：11:30
      */
@@ -66,7 +65,6 @@ class QnService
      * @param $path 本地文件
      * @param string $bucket
      * @throws \Exception
-     * @author: lyh
      * @date: 2021/6/22
      * @time: 2:28 下午
      */
@@ -103,7 +101,6 @@ class QnService
 
     /**移动文件
      * @return bool
-     * @author: lyh
      * @Date：2019/11/28
      * @Time：15:39
      */
@@ -127,7 +124,6 @@ class QnService
     /**删除文件
      * @param $objects
      * @return bool
-     * @author: lyh
      * @Date：2019/11/28
      * @Time：16:38
      */
@@ -160,7 +156,6 @@ class QnService
      * @param $path
      * @param string $suffix
      * @return array|false|mixed|string
-     * @author: lyh
      * @date: 2021/6/22
      * @time: 2:59 下午
      */
@@ -191,7 +186,6 @@ class QnService
     /**路径处理
      * @param $path
      * @return string
-     * @author: lyh
      * @Date：2019/11/28
      * @Time：16:39
      */

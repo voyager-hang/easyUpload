@@ -44,7 +44,6 @@ class AliOssService
 
     /**设置储存目录
      * @param $bucket
-     * @author: lyh
      * @Date：2019/11/27
      * @Time：11:30
      */
@@ -65,7 +64,6 @@ class AliOssService
      * @param string $bucket
      * @return mixed
      * @throws OssException
-     * @author: lyh
      * @date: 2021/6/22
      * @time: 2:28 下午
      */
@@ -90,7 +88,6 @@ class AliOssService
     /**移动文件
      * @param bool $delOldFile
      * @return bool
-     * @author: lyh
      * @Date：2019/11/28
      * @Time：15:39
      */
@@ -132,7 +129,6 @@ class AliOssService
      * @param string $from_bucket
      * @param string $to_bucket
      * @return bool|string
-     * @author: lyh
      * @date: 2021/6/22
      * @time: 11:02 上午
      */
@@ -153,7 +149,6 @@ class AliOssService
     /**删除文件
      * @param $objects
      * @return bool
-     * @author: lyh
      * @Date：2019/11/28
      * @Time：16:38
      */
@@ -182,7 +177,6 @@ class AliOssService
     /**删除文件夹
      * @param $dir
      * @return bool
-     * @author: lyh
      * @Date：2019/11/28
      * @Time：16:38
      */
@@ -206,7 +200,6 @@ class AliOssService
     /**路径处理
      * @param $path
      * @return string
-     * @author: lyh
      * @Date：2019/11/28
      * @Time：16:39
      */
@@ -238,7 +231,6 @@ class AliOssService
      * @param $path
      * @param string $suffix
      * @return array|false|mixed|string
-     * @author: lyh
      * @date: 2021/6/22
      * @time: 2:59 下午
      */

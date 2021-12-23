@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/aliyun/aliyun-oss-php-sdk.git",
-                "reference": "0c9d902c33847c07efc66c4cdf823deaea8fc2b6"
+                "reference": "4ccead614915ee6685bf30016afb01aabd347e46"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aliyun/aliyun-oss-php-sdk/zipball/0c9d902c33847c07efc66c4cdf823deaea8fc2b6",
-                "reference": "0c9d902c33847c07efc66c4cdf823deaea8fc2b6",
+                "url": "https://api.github.com/repos/aliyun/aliyun-oss-php-sdk/zipball/4ccead614915ee6685bf30016afb01aabd347e46",
+                "reference": "4ccead614915ee6685bf30016afb01aabd347e46",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -54,9 +54,9 @@
             "homepage": "http://www.aliyun.com/product/oss/",
             "support": {
                 "issues": "https://github.com/aliyun/aliyun-oss-php-sdk/issues",
-                "source": "https://github.com/aliyun/aliyun-oss-php-sdk/tree/v2.4.2"
+                "source": "https://github.com/aliyun/aliyun-oss-php-sdk/tree/v2.4.3"
             },
-            "time": "2021-06-04T06:55:06+00:00"
+            "time": "2021-08-25T13:03:58+00:00"
         },
         {
             "name": "qiniu/php-sdk",
@@ -64,12 +64,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/qiniu/php-sdk.git",
-                "reference": "0a461e13b09545b23df361843c6a65fdd3a26426"
+                "reference": "d3aec1492a32c81bbb119182ffd401278a75b846"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/qiniu/php-sdk/zipball/0a461e13b09545b23df361843c6a65fdd3a26426",
-                "reference": "0a461e13b09545b23df361843c6a65fdd3a26426",
+                "url": "https://api.github.com/repos/qiniu/php-sdk/zipball/d3aec1492a32c81bbb119182ffd401278a75b846",
+                "reference": "d3aec1492a32c81bbb119182ffd401278a75b846",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -82,8 +82,9 @@
                 "php": ">=5.3.3"
             },
             "require-dev": {
+                "paragonie/random_compat": ">=2",
                 "phpunit/phpunit": "~4.0",
-                "squizlabs/php_codesniffer": "~2.3"
+                "squizlabs/php_codesniffer": "~3.6"
             },
             "default-branch": true,
             "type": "library",
@@ -116,9 +117,9 @@
             ],
             "support": {
                 "issues": "https://github.com/qiniu/php-sdk/issues",
-                "source": "https://github.com/qiniu/php-sdk/tree/v7.3.0"
+                "source": "https://github.com/qiniu/php-sdk/tree/master"
             },
-            "time": "2020-09-24T07:31:29+00:00"
+            "time": "2021-12-10T07:05:21+00:00"
         }
     ],
     "packages-dev": [],

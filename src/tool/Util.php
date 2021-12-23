@@ -108,7 +108,6 @@ class Util
      * @desc:
      * @param $dir
      * @return bool
-     * @author: lyh
      * @date: 2021/6/21
      * @time: 4:07 下午
      */

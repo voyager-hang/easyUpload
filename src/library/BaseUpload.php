@@ -533,7 +533,6 @@ class BaseUpload
      * @param $path
      * @return mixed
      * @throws Exception
-     * @author: lyh
      * @date: 2021/6/21
      * @time: 6:17 下午
      */
@@ -556,7 +555,6 @@ class BaseUpload
      * @desc:获取文件名称 带 / 开头
      * @param $fileObj
      * @return array
-     * @author: lyh
      * @date: 2021/6/21
      * @time: 6:17 下午
      */
@@ -588,7 +586,6 @@ class BaseUpload
      * @param $fileObj
      * @return string
      * @throws Exception
-     * @author: lyh
      * @date: 2021/6/21
      * @time: 3:31 下午
      */
@@ -610,7 +607,6 @@ class BaseUpload
      * @desc:获取根目录下文件绝对路径
      * @param $path
      * @return array|mixed|string|string[]
-     * @author: lyh
      * @date: 2021/6/21
      * @time: 4:39 下午
      */
@@ -640,7 +636,6 @@ class BaseUpload
      * @desc:获取文件域名
      * @param $path
      * @return string
-     * @author: lyh
      * @date: 2021/6/21
      * @time: 4:46 下午
      */

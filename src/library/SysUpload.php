@@ -34,7 +34,6 @@ class SysUpload extends BaseUpload implements Upload
      * @param bool $img
      * @param false $absolutePath
      * @return array|string
-     * @author: lyh
      * @date: 2021/6/23
      * @time: 3:50 下午
      */
@@ -73,7 +72,6 @@ class SysUpload extends BaseUpload implements Upload
      * @param $img
      * @return array|string
      * @throws Exception
-     * @author: lyh
      * @date: 2021/6/23
      * @time: 3:49 下午
      */
@@ -135,7 +133,6 @@ class SysUpload extends BaseUpload implements Upload
      * @desc:上传文件处理
      * @param $formName
      * @return array
-     * @author: lyh
      * @date: 2021/6/21
      * @time: 2:13 下午
      */
@@ -164,7 +161,6 @@ class SysUpload extends BaseUpload implements Upload
     /**
      * @desc:开始上传
      * @return array
-     * @author: lyh
      * @date: 2021/6/21
      * @time: 2:13 下午
      */

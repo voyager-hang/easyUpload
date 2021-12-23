@@ -27,7 +27,6 @@ class EasyUpload
      * @desc:获取上传实单例
      * @param false $newObj
      * @return OssUpload|QiNiuUpload|SysUpload
-     * @author: lyh
      * @date: 2021/6/21
      * @time: 6:18 下午
      */
@@ -69,7 +68,6 @@ class EasyUpload
      * @param $config
      * @param $newObj
      * @return SysUpload
-     * @author: lyh
      * @date: 2021/6/21
      * @time: 6:15 下午
      */
@@ -86,7 +84,6 @@ class EasyUpload
      * @param $config
      * @param $newObj
      * @return ossUpload
-     * @author: lyh
      * @date: 2021/6/21
      * @time: 6:15 下午
      */
@@ -103,7 +100,6 @@ class EasyUpload
      * @param $config
      * @param $newObj
      * @return QiNiuUpload
-     * @author: lyh
      * @date: 2021/6/21
      * @time: 6:16 下午
      */

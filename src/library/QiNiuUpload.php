@@ -79,7 +79,6 @@ class QiNiuUpload extends BaseUpload implements Upload
      * @desc:上传文件处理
      * @param $formName
      * @return array
-     * @author: lyh
      * @date: 2021/6/21
      * @time: 2:13 下午
      */
@@ -108,7 +107,6 @@ class QiNiuUpload extends BaseUpload implements Upload
     /**
      * @desc:开始上传
      * @return array
-     * @author: lyh
      * @date: 2021/6/21
      * @time: 2:13 下午
      */
