@@ -522,7 +522,7 @@ class BaseUpload
     protected function BaseUpload($formName): string
     {
         $fileObj = $_FILES[$formName] ?? [];
-        if (empty($fileObj) || empty($fileObj['size'])) {
+        if (empty($fileObj) || empty($fileObj['size']) || empty($fileObj['size'][0])) {
             if ($this->fileType == 'file') {
                 $tipsMsg = $this->tipsMessage['empty_file'];
             } else {
