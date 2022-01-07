@@ -37,6 +37,7 @@ class EasyResultStruct implements \ArrayAccess
     public function setStatus(bool $status): void
     {
         $this->status = $status;
+        $this->resArray['status'] = $status;
     }
 
     /**
@@ -56,6 +57,7 @@ class EasyResultStruct implements \ArrayAccess
     public function setSuccess(string $success): void
     {
         $this->success = $success;
+        $this->resArray['success'] = $success;
     }
 
     /**
@@ -75,6 +77,7 @@ class EasyResultStruct implements \ArrayAccess
     public function setError(string $error): void
     {
         $this->error = $error;
+        $this->resArray['error'] = $error;
     }
 
 
@@ -95,6 +98,7 @@ class EasyResultStruct implements \ArrayAccess
     public function setSuccessArr(array $success): void
     {
         $this->success = $success;
+        $this->resArray['success'] = $success;
     }
 
     /**
@@ -114,6 +118,7 @@ class EasyResultStruct implements \ArrayAccess
     public function setErrorArr(array $error): void
     {
         $this->error = $error;
+        $this->resArray['error'] = $error;
     }
 
     // 数组形式使用对象 兼容旧版使用方法
