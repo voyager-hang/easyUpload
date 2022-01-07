@@ -13,12 +13,12 @@ use EasyUpload\library\SysUpload;
  */
 class EasyUpload
 {
-    private static $sysUpload;
-    private static $qnUpload;
-    private static $ossUpload;
+    private static SysUpload $sysUpload;
+    private static QiNiuUpload $qnUpload;
+    private static OssUpload $ossUpload;
     private static $config;
 
-    public static function setConfig($config)
+    public static function setConfig(array $config)
     {
         self::$config = $config;
     }
@@ -30,7 +30,7 @@ class EasyUpload
      * @date: 2021/6/21
      * @time: 6:18 下午
      */
-    public static function Instance($newObj = false)
+    public static function Instance(bool $newObj = false)
     {
         $config = self::$config;
         if (empty($config) || !is_array($config)) {
@@ -44,13 +44,13 @@ class EasyUpload
                     $cof = $tpCof::get('EasyUpload');
                 }
                 if (!empty($cof)) {
-                    $config = $cof;
+                    Config::setCof($cof);
+                    $config = Config::def();
                 }
             }
         }
-        Config::setCof($config);
         //上传oss(阿里云oss)，server(服务器 默认)，qn(七牛)
-        switch ($config['upload_server']) {
+        switch ($config->getUploadServer()) {
             case "oss":
                 $class = self::OssUpload($config, $newObj);
                 break;
@@ -71,7 +71,7 @@ class EasyUpload
      * @date: 2021/6/21
      * @time: 6:15 下午
      */
-    private static function SysUpload($config, $newObj)
+    private static function SysUpload($config, $newObj): SysUpload
     {
         if ($newObj || empty(self::$sysUpload)) {
             self::$sysUpload = new SysUpload($config);
@@ -87,7 +87,7 @@ class EasyUpload
      * @date: 2021/6/21
      * @time: 6:15 下午
      */
-    private static function OssUpload($config, $newObj)
+    private static function OssUpload($config, $newObj): OssUpload
     {
         if ($newObj || empty(self::$ossUpload)) {
             self::$ossUpload = new OssUpload($config);
@@ -103,7 +103,7 @@ class EasyUpload
      * @date: 2021/6/21
      * @time: 6:16 下午
      */
-    private static function QnUpload($config, $newObj)
+    private static function QnUpload($config, $newObj): QiNiuUpload
     {
         if ($newObj || empty(self::$qnUpload)) {
             self::$qnUpload = new QiNiuUpload($config);

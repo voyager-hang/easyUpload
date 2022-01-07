@@ -62,7 +62,7 @@ class QnService
      * @name:
      * @desc:上传指定的本地文件内容
      * @param $object
-     * @param $path 本地文件
+     * @param string $path 本地文件
      * @param string $bucket
      * @throws \Exception
      * @date: 2021/6/22

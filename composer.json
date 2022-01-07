@@ -7,7 +7,7 @@
         "qiniu"
     ],
     "require": {
-        "php": ">=5.6.0",
+        "php": ">=7.4",
         "qiniu/php-sdk": ">=7.3",
         "aliyuncs/oss-sdk-php": ">=2.3"
     },

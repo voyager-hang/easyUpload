@@ -6,32 +6,31 @@ namespace EasyUpload\library;
 
 use EasyUpload\interfaces\Upload;
 use EasyUpload\service\AliOssService;
+use EasyUpload\struct\ConfigStruct;
+use EasyUpload\struct\EasyResultStruct;
 use EasyUpload\tool\Util;
 
 class OssUpload extends BaseUpload implements Upload
 {
-    public function __construct($config = [])
+    public function __construct(?ConfigStruct $config = null)
     {
         parent::__construct($config);
     }
 
-    public function imgUpload($formName = 'file')
+    public function imgUpload(string $formName = 'file'): EasyResultStruct
     {
-        // TODO: Implement imgUpload() method.
         $this->setFileType('image');
         return $this->upload($formName);
     }
 
-    public function fileUpload($formName = 'file')
+    public function fileUpload(string $formName = 'file'): EasyResultStruct
     {
-        // TODO: Implement fileUpload() method.
         $this->setFileType('file');
         return $this->upload($formName);
     }
 
-    public function moveTmpToPath($path, $img = true, $absolutePath = false)
+    public function moveTmpToPath($path, bool $img = true, bool $absolutePath = false)
     {
-        // TODO: Implement moveTmpToPath() method.
         $resData = [];
         if (is_array($path)) {
             foreach ($path as $p) {
@@ -66,52 +65,39 @@ class OssUpload extends BaseUpload implements Upload
 
     public function httpPath($path, $suffix = '', $emptyRes = '')
     {
-        // TODO: Implement httpPath() method.
         return AliOssService::getInstance()->httpPath($path, $suffix, $emptyRes);
     }
 
-    public function del($path)
+    public function del($path): bool
     {
-        // TODO: Implement del() method.
         return AliOssService::getInstance()->delFile($path);
     }
 
     /**
      * @desc:上传文件处理
      * @param $formName
-     * @return array
+     * @return EasyResultStruct
      * @date: 2021/6/21
      * @time: 2:13 下午
      */
-    private function upload($formName)
+    private function upload($formName): EasyResultStruct
     {
-        $fileObj = isset($_FILES[$formName]) ? $_FILES[$formName] : [];
-        if (empty($fileObj) || empty($fileObj['size'])) {
-            if ($this->fileType == 'file') {
-                $tipsMsg = $this->tipsMessage['empty_file'];
-            } else {
-                $tipsMsg = $this->tipsMessage['empty_images'];
-            }
-            $result = ['status' => false, 'success' => '', 'error' => $tipsMsg];
-        } else {
-            list($this->multiple, $resObj) = Util::objHandle($fileObj);
-            if ($this->multiple) {
-                $this->fileObjArr = $resObj;
-            } else {
-                $this->fileObj = $resObj;
-            }
+        $err = $this->BaseUpload($formName);
+        if (empty($err)) {
             $result = $this->handle();
+        } else {
+            $result = new EasyResultStruct(false, '', $err);
         }
         return $result;
     }
 
     /**
      * @desc:开始上传
-     * @return array
+     * @return EasyResultStruct
      * @date: 2021/6/21
      * @time: 2:13 下午
      */
-    private function handle()
+    private function handle(): EasyResultStruct
     {
         // 初始化参数
         $ext = $this->imgExt;
@@ -132,11 +118,11 @@ class OssUpload extends BaseUpload implements Upload
             $path = trim(trim($path, '\\'), '/');
         }
         $path = ltrim($this->absolutePath($path), '/');
-        $result = ['status' => true, 'success' => '', 'error' => ''];
+        $result = new EasyResultStruct(true, '', '');
         if ($this->multiple) {
-            $result['success'] = [];
-            $result['error'] = [];
             //批量上传
+            $successArr = [];
+            $errArr = [];
             foreach ($this->fileObjArr as $file) {
                 try {
                     Util::checkExt($file, $ext);
@@ -147,12 +133,14 @@ class OssUpload extends BaseUpload implements Upload
                     list($filePath, $fileName) = $this->getFileName($file);
                     $savePath = $path . $filePath . '/' . $fileName;
                     $ossRes = AliOssService::getInstance()->uploadFile($savePath, $file->getTmpName());
-                    $result['success'][] = $ossRes['url'];
+                    $successArr[] = $ossRes['url'];
                 } catch (\Exception $e) {
-                    $result['error'][] = $e->getMessage();
-                    $result['status'] = false;
+                    $errArr[] = $e->getMessage();
+                    $result->setStatus(false);
                 }
             }
+            $result->setSuccessArr($successArr);
+            $result->setErrorArr($errArr);
         } else {
             //单文件上传
             try {
@@ -164,10 +152,10 @@ class OssUpload extends BaseUpload implements Upload
                 list($filePath, $fileName) = $this->getFileName($this->fileObj);
                 $savePath = $path . $filePath . '/' . $fileName;
                 $ossRes = AliOssService::getInstance()->uploadFile($savePath, $this->fileObj->getTmpName());
-                $result['success'] = $ossRes['url'];
+                $result->setSuccess($ossRes['url']);
             } catch (\Exception $e) {
-                $result['error'] = $e->getMessage();
-                $result['status'] = false;
+                $result->setError($e->getMessage());
+                $result->setStatus(false);
             }
         }
         return $result;

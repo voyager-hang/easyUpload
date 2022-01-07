@@ -5,57 +5,63 @@ namespace EasyUpload\library;
 
 
 use EasyUpload\config\Config;
+use EasyUpload\file\File;
+use EasyUpload\struct\ConfigStruct;
+use EasyUpload\struct\EasyResultStruct;
+use EasyUpload\struct\FileArrStruct;
+use EasyUpload\struct\OssConfigStruct;
+use EasyUpload\struct\QnConfigStruct;
 use EasyUpload\tool\Util;
 use Exception;
 
 class BaseUpload
 {
     // 是否多文件上传
-    protected $multiple;
+    protected bool $multiple;
     // 当前配置文件
-    protected $config;
+    protected ConfigStruct $config;
     // 当前上传的文件对象
-    protected $fileObj;
+    protected File $fileObj;
     // 当前上传的文件对象数组
-    protected $fileObjArr;
+    protected FileArrStruct $fileObjArr;
     //上传oss(阿里云oss)，server(服务器 默认)，qn(七牛)
-    protected $uploadServer;
+    protected string $uploadServer;
     //命名方式  md5(md5), dateMd5(日期md5 默认) , original(原名) , dateOriginal(日期原名)
-    protected $giveName;
+    protected string $giveName;
     //是否开启mimes验证
-    protected $mimes;
+    protected bool $mimes;
     //临时文件夹
-    protected $tempDir;
+    protected string $tempDir;
     //允许的图片文件上传目录
-    protected $imgPath;
+    protected string $imgPath;
     //允许的图片文件MIME类型
-    protected $imgMimes;
+    protected array $imgMimes;
     //允许的图片文件后缀名
-    protected $imgExt;
+    protected array $imgExt;
     //允许的图片文件大小
-    protected $imgSize;
+    protected int $imgSize;
     //允许的其他文件上传目录
-    protected $filePath;
+    protected string $filePath;
     //允许的其他文件MIME类型
-    protected $fileMimes;
+    protected array $fileMimes;
     //允许的其他文件后缀名
-    protected $fileExt;
+    protected array $fileExt;
     //允许的其他文件大小
-    protected $fileSize;
+    protected int $fileSize;
     //文件类型 image|file
-    protected $fileType;
+    protected string $fileType;
     //路径过滤
-    protected $filter;
+    protected array $filter;
     //自定义域名
-    protected $httpHost;
+    protected string $httpHost;
     //oss配置
-    protected $ossConfig;
+    protected OssConfigStruct $ossConfig;
     //七牛配置
-    protected $qiNiuConfig;
+    protected QnConfigStruct $qiNiuConfig;
     //提示信息
-    protected $tipsMessage;
+    protected array $tipsMessage;
 
-    public function __construct($config = [])
+    public function __construct(?ConfigStruct $config = null)
     {
         $defConf = Config::def();
         if (empty($config)) {
@@ -68,227 +74,398 @@ class BaseUpload
                     $cof = $tpCof::get('EasyUpload');
                 }
                 if (!empty($cof)) {
-                    $config = $cof;
+                    Config::setCof($cof);
+                    $config = Config::def();
                 }
             }
         }
         $this->config = $config;
         //上传访问 oss(阿里云oss)，server(服务器 默认)，qn(七牛)
-        $uploadServer = isset($config['upload_server']) ? $config['upload_server'] : $defConf['upload_server'];
+        $uploadServer = $config->getUploadServer();
         if (in_array($uploadServer, ['oss', 'server', 'qn'])) {
             $this->uploadServer = $uploadServer;
         } else {
             $this->uploadServer = 'server';
         }
         //是否开启mimes验证
-        $this->mimes = isset($config['mimes']) ? $config['mimes'] : $defConf['mimes'];
+        $this->mimes = $config->isMimes();
         //临时文件夹
-        $tempDir = isset($config['temp_dir']) ? $config['temp_dir'] : $defConf['temp_dir'];
+        $tempDir = $config->getTempDir();
         if (substr($tempDir, 0, strlen('.')) === '.') {
             $tempDir = ltrim($tempDir, '.');
         }
         $tempDir = ltrim(ltrim($tempDir, '\\'), '/');
         $this->tempDir = '.' . DIRECTORY_SEPARATOR . $tempDir;
         //允许的图片文件上传目录
-        $imgPath = isset($config['img_path']) ? $config['img_path'] : $defConf['img_path'];
+        $imgPath = $config->getImgPath();
         if (substr($imgPath, 0, strlen('.')) === '.') {
             $imgPath = ltrim($imgPath, '.');
         }
         $imgPath = ltrim(ltrim($imgPath, '\\'), '/');
         $this->imgPath = '.' . DIRECTORY_SEPARATOR . $imgPath;
         //允许的图片文件MIME类型
-        $this->imgMimes = isset($config['img_mimes']) ? $config['img_mimes'] : $defConf['img_mimes'];
+        $this->imgMimes = $config->getImgMimes();
         //允许的图片文件后缀名
-        $this->imgExt = isset($config['img_ext']) ? $config['img_ext'] : $defConf['img_ext'];
+        $this->imgExt = $config->getImgExt();
         //允许的图片文件大小
-        $this->imgSize = isset($config['img_size']) ? $config['img_size'] : $defConf['img_size'];
+        $this->imgSize = $config->getImgSize();
         //允许的其他文件上传目录
-        $filePath = isset($config['file_path']) ? $config['file_path'] : $defConf['file_path'];
+        $filePath = $config->getFilePath();
         if (substr($filePath, 0, strlen('.')) === '.') {
             $filePath = ltrim($filePath, '.');
         }
         $filePath = ltrim(ltrim($filePath, '\\'), '/');
         $this->filePath = '.' . DIRECTORY_SEPARATOR . $filePath;
         //允许的其他文件MIME类型
-        $this->fileMimes = isset($config['file_mimes']) ? $config['file_mimes'] : $defConf['file_mimes'];
+        $this->fileMimes = $config->getFileMimes();
         //允许的其他文件后缀名
-        $this->fileExt = isset($config['file_ext']) ? $config['file_ext'] : $defConf['file_ext'];
+        $this->fileExt = $config->getFileExt();
         //允许的其他文件大小
-        $this->fileSize = isset($config['file_size']) ? $config['file_size'] : $defConf['file_size'];
+        $this->fileSize = $config->getFileSize();
         //路径过滤
-        $this->filter = isset($config['filter']) ? $config['filter'] : $defConf['filter'];
+        $this->filter = $config->getFilter();
         //地址前缀
-        $this->httpHost = isset($config['http_host']) ? $config['http_host'] : $defConf['http_host'];
+        $this->httpHost = $config->getHttpHost();
         //oss配置
-        $this->ossConfig = isset($config['oss_config']) ? $config['oss_config'] : $defConf['oss_config'];
+        $this->ossConfig = $config->getOssConfig();
         //七牛配置
-        $this->qiNiuConfig = isset($config['qi_niu_config']) ? $config['qi_niu_config'] : $defConf['qi_niu_config'];
+        $this->qiNiuConfig = $config->getQiNiuConfig();
         //提示信息
-        $this->tipsMessage = isset($config['tips_message']) ? $config['tips_message'] : $defConf['tips_message'];
+        $this->tipsMessage = $config->getTipsMessage();
         //命名方式 md5(md5), dateMd5(日期md5 默认) , original(原名) , dateOriginal(日期原名)
-        if (isset($config['give_name']) && in_array($config['give_name'], ['md5', 'dateMd5', 'original', 'dateOriginal'])) {
-            $this->giveName = $config['give_name'];
+        if (in_array($config->getGiveName(), ['md5', 'dateMd5', 'original', 'dateOriginal'])) {
+            $this->giveName = $config->getGiveName();
         } else {
-            $this->giveName = $defConf['give_name'];
+            $this->giveName = $defConf->getGiveName();
         }
     }
 
     /**
-     * @return mixed
+     * @return bool
      */
-    public function getMultiple()
+    public function isMultiple(): bool
     {
         return $this->multiple;
     }
 
     /**
-     * @param mixed $multiple
+     * @param bool $multiple
      */
-    public function setMultiple($multiple)
+    public function setMultiple(bool $multiple): void
     {
         $this->multiple = $multiple;
     }
 
     /**
-     * @return mixed|string
+     * @return ConfigStruct|null
      */
-    public function getUploadServer()
+    public function getConfig(): ?ConfigStruct
     {
-        return $this->uploadServer;
+        return $this->config;
     }
 
     /**
-     * @param mixed|string $uploadServer
+     * @param ConfigStruct|null $config
      */
-    public function setUploadServer($uploadServer)
+    public function setConfig(?ConfigStruct $config): void
     {
-        $this->uploadServer = $uploadServer;
+        $this->config = $config;
     }
 
     /**
-     * @return mixed
+     * @return File
      */
-    public function getTipsMessage()
-    {
-        return $this->tipsMessage;
-    }
-
-    /**
-     * @param mixed $tipsMessage
-     */
-    public function setTipsMessage($tipsMessage)
-    {
-        $this->tipsMessage = $tipsMessage;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getFileObjArr()
-    {
-        return $this->fileObjArr;
-    }
-
-    /**
-     * @param mixed $fileObjArr
-     */
-    public function setFileObjArr($fileObjArr)
-    {
-        $this->fileObjArr = $fileObjArr;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getFileObj()
+    public function getFileObj(): File
     {
         return $this->fileObj;
     }
 
     /**
-     * @param mixed $fileObj
+     * @param File $fileObj
      */
-    public function setFileObj($fileObj)
+    public function setFileObj(File $fileObj): void
     {
         $this->fileObj = $fileObj;
     }
 
     /**
-     * @return mixed
+     * @return FileArrStruct
      */
-    public function getOss()
+    public function getFileObjArr(): FileArrStruct
     {
-        return $this->oss;
+        return $this->fileObjArr;
     }
 
     /**
-     * @param mixed $oss
+     * @param FileArrStruct $fileObjArr
      */
-    public function setOss($oss)
+    public function setFileObjArr(FileArrStruct $fileObjArr): void
     {
-        $this->oss = $oss;
+        $this->fileObjArr = $fileObjArr;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getQn()
+    public function getUploadServer(): string
     {
-        return $this->qn;
+        return $this->uploadServer;
     }
 
     /**
-     * @param mixed $qn
+     * @param string $uploadServer
      */
-    public function setQn($qn)
+    public function setUploadServer(string $uploadServer): void
     {
-        $this->qn = $qn;
+        $this->uploadServer = $uploadServer;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getGiveName()
+    public function getGiveName(): string
     {
         return $this->giveName;
     }
 
     /**
-     * @param mixed $giveName
+     * @param string $giveName
      */
-    public function setGiveName($giveName)
+    public function setGiveName(string $giveName): void
     {
         $this->giveName = $giveName;
     }
 
     /**
-     * @return mixed
+     * @return bool
      */
-    public function getMimes()
+    public function isMimes(): bool
     {
         return $this->mimes;
     }
 
     /**
-     * @param mixed $mimes
+     * @param bool $mimes
      */
-    public function setMimes($mimes)
+    public function setMimes(bool $mimes): void
     {
         $this->mimes = $mimes;
     }
 
     /**
-     * @return mixed
+     * @return array|string[]
      */
-    public function getTempDir()
+    public function getImgMimes(): array
     {
-        return $this->tempDir;
+        return $this->imgMimes;
     }
 
     /**
-     * @param mixed $tempDir
+     * @param array|string[] $imgMimes
      */
-    public function setTempDir($tempDir)
+    public function setImgMimes(array $imgMimes): void
+    {
+        $this->imgMimes = $imgMimes;
+    }
+
+    /**
+     * @return array|string[]
+     */
+    public function getImgExt(): array
+    {
+        return $this->imgExt;
+    }
+
+    /**
+     * @param array|string[] $imgExt
+     */
+    public function setImgExt(array $imgExt): void
+    {
+        $this->imgExt = $imgExt;
+    }
+
+    /**
+     * @return int
+     */
+    public function getImgSize(): int
+    {
+        return $this->imgSize;
+    }
+
+    /**
+     * @param int $imgSize
+     */
+    public function setImgSize(int $imgSize): void
+    {
+        $this->imgSize = $imgSize;
+    }
+
+    /**
+     * @return array|string[]
+     */
+    public function getFileMimes(): array
+    {
+        return $this->fileMimes;
+    }
+
+    /**
+     * @param array|string[] $fileMimes
+     */
+    public function setFileMimes(array $fileMimes): void
+    {
+        $this->fileMimes = $fileMimes;
+    }
+
+    /**
+     * @return array|string[]
+     */
+    public function getFileExt(): array
+    {
+        return $this->fileExt;
+    }
+
+    /**
+     * @param array|string[] $fileExt
+     */
+    public function setFileExt(array $fileExt): void
+    {
+        $this->fileExt = $fileExt;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFileSize(): int
+    {
+        return $this->fileSize;
+    }
+
+    /**
+     * @param int $fileSize
+     */
+    public function setFileSize(int $fileSize): void
+    {
+        $this->fileSize = $fileSize;
+    }
+
+    /**
+     * @return string
+     * @deprecated Obsolete in the next version, please use getUploadType
+     */
+    public function getFileType(): string
+    {
+        return $this->getUploadType();
+    }
+
+    /**
+     * @return string
+     */
+    public function getUploadType(): string
+    {
+        return $this->fileType;
+    }
+
+    /**
+     * @param string $fileType
+     * @deprecated Obsolete in the next version, please use setUploadType
+     */
+    public function setFileType(string $fileType): void
+    {
+        $this->setUploadType($fileType);
+    }
+
+    /**
+     * @param string $fileType
+     */
+    public function setUploadType(string $fileType): void
+    {
+        $this->fileType = $fileType;
+    }
+
+    /**
+     * @return array|string[]
+     */
+    public function getFilter(): array
+    {
+        return $this->filter;
+    }
+
+    /**
+     * @param array|string[] $filter
+     */
+    public function setFilter(array $filter): void
+    {
+        $this->filter = $filter;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHttpHost(): string
+    {
+        return $this->httpHost;
+    }
+
+    /**
+     * @param string $httpHost
+     */
+    public function setHttpHost(string $httpHost): void
+    {
+        $this->httpHost = $httpHost;
+    }
+
+    /**
+     * @return OssConfigStruct
+     */
+    public function getOssConfig(): OssConfigStruct
+    {
+        return $this->ossConfig;
+    }
+
+    /**
+     * @param OssConfigStruct $ossConfig
+     */
+    public function setOssConfig(OssConfigStruct $ossConfig): void
+    {
+        $this->ossConfig = $ossConfig;
+    }
+
+    /**
+     * @return QnConfigStruct
+     */
+    public function getQiNiuConfig(): QnConfigStruct
+    {
+        return $this->qiNiuConfig;
+    }
+
+    /**
+     * @param QnConfigStruct $qiNiuConfig
+     */
+    public function setQiNiuConfig(QnConfigStruct $qiNiuConfig): void
+    {
+        $this->qiNiuConfig = $qiNiuConfig;
+    }
+
+    /**
+     * @return array|string[]
+     */
+    public function getTipsMessage(): array
+    {
+        return $this->tipsMessage;
+    }
+
+    /**
+     * @param array|string[] $tipsMessage
+     */
+    public function setTipsMessage(array $tipsMessage): void
+    {
+        $this->tipsMessage = $tipsMessage;
+    }
+
+    /**
+     * @param string $tempDir
+     */
+    public function setTempDir(string $tempDir): void
     {
         if (empty($tempDir)) {
             $this->tempDir = false;
@@ -302,18 +479,10 @@ class BaseUpload
     }
 
     /**
-     * @return mixed
+     * @param string $filePath
+     * @param bool $absolute
      */
-    public function getImgPath()
-    {
-        return $this->imgPath;
-    }
-
-    /**
-     * @param $filePath
-     * @param false $absolute
-     */
-    public function setImgPath($filePath, $absolute = false)
+    public function setImgPath(string $filePath, bool $absolute = false): void
     {
         if ($absolute) {
             $this->imgPath = $filePath;
@@ -327,66 +496,10 @@ class BaseUpload
     }
 
     /**
-     * @return mixed
+     * @param string $filePath
+     * @param bool $absolute
      */
-    public function getImgMimes()
-    {
-        return $this->imgMimes;
-    }
-
-    /**
-     * @param mixed $imgMimes
-     */
-    public function setImgMimes($imgMimes)
-    {
-        $this->imgMimes = $imgMimes;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getImgExt()
-    {
-        return $this->imgExt;
-    }
-
-    /**
-     * @param mixed $imgExt
-     */
-    public function setImgExt($imgExt)
-    {
-        $this->imgExt = $imgExt;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getImgSize()
-    {
-        return $this->imgSize;
-    }
-
-    /**
-     * @param mixed $imgSize
-     */
-    public function setImgSize($imgSize)
-    {
-        $this->imgSize = $imgSize;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getFilePath()
-    {
-        return $this->filePath;
-    }
-
-    /**
-     * @param $filePath
-     * @param false $absolute
-     */
-    public function setFilePath($filePath, $absolute = false)
+    public function setFilePath(string $filePath, bool $absolute = false): void
     {
         if ($absolute) {
             $this->filePath = $filePath;
@@ -400,131 +513,31 @@ class BaseUpload
     }
 
     /**
-     * @return mixed
+     * @desc:上传文件处理
+     * @param $formName
+     * @return string
+     * @date: 2021/6/21
+     * @time: 2:13 下午
      */
-    public function getFileMimes()
+    protected function BaseUpload($formName): string
     {
-        return $this->fileMimes;
-    }
-
-    /**
-     * @param mixed $fileMimes
-     */
-    public function setFileMimes($fileMimes)
-    {
-        $this->fileMimes = $fileMimes;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getFileExt()
-    {
-        return $this->fileExt;
-    }
-
-    /**
-     * @param mixed $fileExt
-     */
-    public function setFileExt($fileExt)
-    {
-        $this->fileExt = $fileExt;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getFileSize()
-    {
-        return $this->fileSize;
-    }
-
-    /**
-     * @param mixed $fileSize
-     */
-    public function setFileSize($fileSize)
-    {
-        $this->fileSize = $fileSize;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getFileType()
-    {
-        return $this->fileType;
-    }
-
-    /**
-     * @param mixed $fileType
-     */
-    public function setFileType($fileType)
-    {
-        $this->fileType = $fileType;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getFilter()
-    {
-        return $this->filter;
-    }
-
-    /**
-     * @param mixed $filter
-     */
-    public function setFilter($filter)
-    {
-        $this->filter = $filter;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getHttpHost()
-    {
-        return $this->httpHost;
-    }
-
-    /**
-     * @param mixed $httpHost
-     */
-    public function setPathPrefix($httpHost)
-    {
-        $this->httpHost = $httpHost;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getOssConfig()
-    {
-        return $this->ossConfig;
-    }
-
-    /**
-     * @param mixed $ossConfig
-     */
-    public function setOssConfig($ossConfig)
-    {
-        $this->ossConfig = $ossConfig;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getQiNiuConfig()
-    {
-        return $this->qiNiuConfig;
-    }
-
-    /**
-     * @param mixed $qiNiuConfig
-     */
-    public function setQiNiuConfig($qiNiuConfig)
-    {
-        $this->qiNiuConfig = $qiNiuConfig;
+        $fileObj = $_FILES[$formName] ?? [];
+        if (empty($fileObj) || empty($fileObj['size'])) {
+            if ($this->fileType == 'file') {
+                $tipsMsg = $this->tipsMessage['empty_file'];
+            } else {
+                $tipsMsg = $this->tipsMessage['empty_images'];
+            }
+            return $tipsMsg;
+        } else {
+            list($this->multiple, $resObj) = Util::objHandle($fileObj);
+            if ($this->multiple) {
+                $this->fileObjArr = $resObj;
+            } else {
+                $this->fileObj = $resObj;
+            }
+            return '';
+        }
     }
 
     /**
@@ -558,7 +571,7 @@ class BaseUpload
      * @date: 2021/6/21
      * @time: 6:17 下午
      */
-    public function getFileName($fileObj)
+    public function getFileName($fileObj): array
     {
         $filePath = '';
         $ext = $fileObj->getExt();
@@ -589,7 +602,7 @@ class BaseUpload
      * @date: 2021/6/21
      * @time: 3:31 下午
      */
-    protected function getResPath($fileObj)
+    protected function getResPath($fileObj): string
     {
         $filePath = $fileObj->getSaveName();
         if (substr($filePath, 0, strlen('.')) === '.') {
@@ -639,7 +652,7 @@ class BaseUpload
      * @date: 2021/6/21
      * @time: 4:46 下午
      */
-    public function getDomain($path)
+    public function getDomain($path): string
     {
         $http = '';
         $path = str_ireplace('\\', '/', $path);

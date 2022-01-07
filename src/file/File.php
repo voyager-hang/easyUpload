@@ -4,85 +4,85 @@ namespace EasyUpload\file;
 
 class File
 {
-    public $name;
-    public $type;
-    public $tmpName;
-    public $error;
-    public $width = 0;
-    public $height = 0;
-    public $size;
-    public $sizeKb;
-    public $sizeMb;
-    public $saveName;
-    public $resultPath;
-    public $ext;
+    private string $name;
+    private string $type;
+    private string $tmpName;
+    private string $error;
+    private float $width = 0;
+    private float $height = 0;
+    private float $size;
+    private float $sizeKb;
+    private float $sizeMb;
+    private string $saveName;
+    private string $resultPath;
+    private string $ext;
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
     /**
-     * @param mixed $name
+     * @param string $name
      */
-    public function setName($name)
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
 
     /**
-     * @param mixed $type
+     * @param string $type
      */
-    public function setType($type)
+    public function setType(string $type): void
     {
         $this->type = $type;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getTmpName()
+    public function getTmpName(): string
     {
         return $this->tmpName;
     }
 
     /**
-     * @param mixed $tmpName
+     * @param string $tmpName
      */
-    public function setTmpName($tmpName)
+    public function setTmpName(string $tmpName): void
     {
         $this->tmpName = $tmpName;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getError()
+    public function getError(): string
     {
         return $this->error;
     }
 
     /**
-     * @param mixed $error
+     * @param string $error
      */
-    public function setError($error)
+    public function setError(string $error): void
     {
         $this->error = $error;
     }
 
     /**
-     * @return mixed
+     * @return float|int
      */
     public function getWidth()
     {
@@ -90,15 +90,15 @@ class File
     }
 
     /**
-     * @param mixed $width
+     * @param float|int $width
      */
-    public function setWidth($width)
+    public function setWidth($width): void
     {
-        $this->size = $width;
+        $this->width = $width;
     }
 
     /**
-     * @return mixed
+     * @return float|int
      */
     public function getHeight()
     {
@@ -106,107 +106,108 @@ class File
     }
 
     /**
-     * @param mixed $height
+     * @param float|int $height
      */
-    public function setHeight($height)
+    public function setHeight($height): void
     {
-        $this->size = $height;
+        $this->height = $height;
     }
 
     /**
-     * @return mixed
+     * @return float
      */
-    public function getSize()
+    public function getSize(): float
     {
         return $this->size;
     }
 
     /**
-     * @param mixed $size
+     * @param float $size
      */
-    public function setSize($size)
+    public function setSize(float $size): void
     {
         $this->size = $size;
     }
 
     /**
-     * @return mixed
+     * @return float
      */
-    public function getSizeKb()
+    public function getSizeKb(): float
     {
         return $this->sizeKb;
     }
 
     /**
-     * @param mixed $sizeKb
+     * @param float $sizeKb
      */
-    public function setSizeKb($sizeKb)
+    public function setSizeKb(float $sizeKb): void
     {
         $this->sizeKb = $sizeKb;
     }
 
     /**
-     * @return mixed
+     * @return float
      */
-    public function getSizeMb()
+    public function getSizeMb(): float
     {
         return $this->sizeMb;
     }
 
     /**
-     * @param mixed $sizeMb
+     * @param float $sizeMb
      */
-    public function setSizeMb($sizeMb)
+    public function setSizeMb(float $sizeMb): void
     {
         $this->sizeMb = $sizeMb;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getSaveName()
+    public function getSaveName(): string
     {
         return $this->saveName;
     }
 
     /**
-     * @param mixed $saveName
+     * @param string $saveName
      */
-    public function setSaveName($saveName)
+    public function setSaveName(string $saveName): void
     {
         $this->saveName = $saveName;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getResultPath()
+    public function getResultPath(): string
     {
         return $this->resultPath;
     }
 
     /**
-     * @param mixed $resultPath
+     * @param string $resultPath
      */
-    public function setResultPath($resultPath)
+    public function setResultPath(string $resultPath): void
     {
         $this->resultPath = $resultPath;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getExt()
+    public function getExt(): string
     {
         return $this->ext;
     }
 
     /**
-     * @param mixed $ext
+     * @param string $ext
      */
-    public function setExt($ext)
+    public function setExt(string $ext): void
     {
         $this->ext = $ext;
     }
+
 
 }
