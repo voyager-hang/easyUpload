@@ -87,47 +87,72 @@ class Config
         ]
     ];
 
+    public static function arrToObj(array $conf)
+    {
+        return self::def($conf);
+    }
+
     /**获取默认配置对象
      * @return ConfigStruct
      */
-    public static function def(): ConfigStruct
+    public static function def($conf = null): ConfigStruct
     {
         if (!empty(self::$defConfig)) {
             return ConfigStruct::assert(self::$defConfig);
         }
+        if (empty($conf) || !is_array($conf)) {
+            $conf = self::$defCofArr;
+        }
         $confObj = new ConfigStruct();
-        $confObj->setMimes(self::$defCofArr['mimes']);
-        $confObj->setUploadServer(self::$defCofArr['upload_server']);
-        $confObj->setGiveName(self::$defCofArr['give_name']);
-        $confObj->setTempDir(self::$defCofArr['temp_dir']);
-        $confObj->setImgPath(self::$defCofArr['img_path']);
-        $confObj->setImgMimes(self::$defCofArr['img_mimes']);
-        $confObj->setImgExt(self::$defCofArr['img_ext']);
-        $confObj->setImgSize(self::$defCofArr['img_size']);
-        $confObj->setFilePath(self::$defCofArr['file_path']);
-        $confObj->setFileMimes(self::$defCofArr['file_mimes']);
-        $confObj->setFileExt(self::$defCofArr['file_ext']);
-        $confObj->setFileSize(self::$defCofArr['file_size']);
-        $confObj->setFilter(self::$defCofArr['filter']);
-        $confObj->setHttpHost(self::$defCofArr['http_host']);
+        $confObj->setMimes(self::getConfKey($conf, 'mimes'));
+        $confObj->setUploadServer(self::getConfKey($conf, 'upload_server'));
+        $confObj->setGiveName(self::getConfKey($conf, 'give_name'));
+        $confObj->setTempDir(self::getConfKey($conf, 'temp_dir'));
+        $confObj->setImgPath(self::getConfKey($conf, 'img_path'));
+        $confObj->setImgMimes(self::getConfKey($conf, 'img_mimes'));
+        $confObj->setImgExt(self::getConfKey($conf, 'img_ext'));
+        $confObj->setImgSize(self::getConfKey($conf, 'img_size'));
+        $confObj->setFilePath(self::getConfKey($conf, 'file_path'));
+        $confObj->setFileMimes(self::getConfKey($conf, 'file_mimes'));
+        $confObj->setFileExt(self::getConfKey($conf, 'file_ext'));
+        $confObj->setFileSize(self::getConfKey($conf, 'file_size'));
+        $confObj->setFilter(self::getConfKey($conf, 'filter'));
+        $confObj->setHttpHost(self::getConfKey($conf, 'http_host'));
         $ossConfig = new OssConfigStruct();
-        $ossConfig->setKeyId(self::$defCofArr['oss_config']['key_id']);
-        $ossConfig->setKeySecret(self::$defCofArr['oss_config']['key_secret']);
-        $ossConfig->setNetworkProtocol(self::$defCofArr['oss_config']['network_protocol']);
-        $ossConfig->setEndpoint(self::$defCofArr['oss_config']['endpoint']);
-        $ossConfig->setBucket(self::$defCofArr['oss_config']['bucket']);
-        $ossConfig->setHttpHost(self::$defCofArr['oss_config']['http_host']);
+        $ossConfig->setKeyId(self::getConfKey($conf, 'oss_config', 'key_id'));
+        $ossConfig->setKeySecret(self::getConfKey($conf, 'oss_config', 'key_secret'));
+        $ossConfig->setNetworkProtocol(self::getConfKey($conf, 'oss_config', 'network_protocol'));
+        $ossConfig->setEndpoint(self::getConfKey($conf, 'oss_config', 'endpoint'));
+        $ossConfig->setBucket(self::getConfKey($conf, 'oss_config', 'bucket'));
+        $ossConfig->setHttpHost(self::getConfKey($conf, 'oss_config', 'http_host'));
         $confObj->setOssConfig($ossConfig);
         $qNConfig = new QnConfigStruct();
-        $qNConfig->setAccessKey(self::$defCofArr['qi_niu_config']['access_key']);
-        $qNConfig->setSecretKey(self::$defCofArr['qi_niu_config']['secret_key']);
-        $qNConfig->setBucket(self::$defCofArr['qi_niu_config']['bucket']);
-        $qNConfig->setHttpHost(self::$defCofArr['qi_niu_config']['http_host']);
-        $qNConfig->setExpires(self::$defCofArr['qi_niu_config']['expires']);
+        $qNConfig->setAccessKey(self::getConfKey($conf, 'qi_niu_config', 'access_key'));
+        $qNConfig->setSecretKey(self::getConfKey($conf, 'qi_niu_config', 'secret_key'));
+        $qNConfig->setBucket(self::getConfKey($conf, 'qi_niu_config', 'bucket'));
+        $qNConfig->setHttpHost(self::getConfKey($conf, 'qi_niu_config', 'http_host'));
+        $qNConfig->setExpires(self::getConfKey($conf, 'qi_niu_config', 'expires'));
         $confObj->setQiNiuConfig($qNConfig);
-        $confObj->setTipsMessage(self::$defCofArr['tips_message']);
+        $confObj->setTipsMessage(self::getConfKey($conf, 'tips_message'));
         self::$defConfig = $confObj;
         return ConfigStruct::assert(self::$defConfig);
+    }
+
+    private static function getConfKey($cong, ...$key)
+    {
+        $val = $cong;
+        foreach ($key as $v) {
+            if (isset($val[$v])) {
+                $val = $val[$v];
+            } else {
+                $val = 'EMPTY_VALUE_ISSET';
+                break;
+            }
+        }
+        if ($val != 'EMPTY_VALUE_ISSET') {
+            return $val;
+        }
+        return self::get(...$key);
     }
 
     /**多级获取配置信息

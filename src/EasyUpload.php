@@ -49,6 +49,9 @@ class EasyUpload
                 }
             }
         }
+        if(is_array($config)){
+            $config = Config::arrToObj($config);
+        }
         //上传oss(阿里云oss)，server(服务器 默认)，qn(七牛)
         switch ($config->getUploadServer()) {
             case "oss":

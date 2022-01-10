@@ -7,7 +7,6 @@ namespace EasyUpload\library;
 use EasyUpload\config\Config;
 use EasyUpload\file\File;
 use EasyUpload\struct\ConfigStruct;
-use EasyUpload\struct\EasyResultStruct;
 use EasyUpload\struct\FileArrStruct;
 use EasyUpload\struct\OssConfigStruct;
 use EasyUpload\struct\QnConfigStruct;
