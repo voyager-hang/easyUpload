@@ -93,14 +93,15 @@ class SysUpload extends BaseUpload implements Upload
         return $this->absolutePath($savePath);
     }
 
-    public function httpPath($path, $suffix = '', $emptyRes = '')
+    public function httpPath($path, $suffix = '', $emptyRes = '', $host = '')
     {
         if (is_array($path)) {
             foreach ($path as $k => $v) {
-                $path[$k] = $v . $suffix;
+                $path[$k] = $host . $v . $suffix;
             }
         } else {
-            $path .= $suffix;
+            if (empty($path)) return $emptyRes;
+            $path = $host . $path . $suffix;
         }
         return $path;
     }

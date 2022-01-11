@@ -63,7 +63,7 @@ class OssUpload extends BaseUpload implements Upload
         return $savePath;
     }
 
-    public function httpPath($path, $suffix = '', $emptyRes = '')
+    public function httpPath($path, $suffix = '', $emptyRes = '', $host = '')
     {
         return AliOssService::getInstance()->httpPath($path, $suffix, $emptyRes);
     }
