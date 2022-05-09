@@ -6,6 +6,8 @@ use EasyUpload\config\Config;
 use EasyUpload\library\OssUpload;
 use EasyUpload\library\QiNiuUpload;
 use EasyUpload\library\SysUpload;
+use EasyUpload\struct\ConfigStruct;
+use Exception;
 
 /**
  * Class EasyUpload 工厂类
@@ -32,26 +34,7 @@ class EasyUpload
      */
     public static function Instance(bool $newObj = false)
     {
-        $config = self::$config;
-        if (empty($config) || !is_array($config)) {
-            $defConf = Config::def();
-            $config = $defConf;
-            $tpCof = '\think\facade\Config';
-            if (class_exists($tpCof)) {
-                try {
-                    $cof = $tpCof::pull('EasyUpload');
-                } catch (\Exception $e) {
-                    $cof = $tpCof::get('EasyUpload');
-                }
-                if (!empty($cof)) {
-                    Config::setCof($cof);
-                    $config = Config::def();
-                }
-            }
-        }
-        if(is_array($config)){
-            $config = Config::arrToObj($config);
-        }
+        $config = self::getConfig();
         //上传oss(阿里云oss)，server(服务器 默认)，qn(七牛)
         switch ($config->getUploadServer()) {
             case "oss":
@@ -64,6 +47,71 @@ class EasyUpload
                 $class = self::SysUpload($config, $newObj);
         }
         return $class;
+    }
+
+    /**
+     * @desc: 获取配置
+     * @return ConfigStruct
+     */
+    private static function getConfig(): ConfigStruct
+    {
+        $config = self::$config;
+        if (empty($config) || !is_array($config)) {
+            $tpCof = '\think\facade\Config';
+            $useMyConfigFile = true;
+            if (class_exists($tpCof)) {
+                try {
+                    $cof = $tpCof::pull('EasyUpload');
+                } catch (\Exception $e) {
+                    $cof = $tpCof::get('EasyUpload');
+                }
+                if (!empty($cof)) {
+                    Config::setCof($cof);
+                    $config = Config::def();
+                    $useMyConfigFile = false;
+                }
+            }
+            // 判断是否使用自己的配置文件
+            if ($useMyConfigFile) {
+                $dir = str_ireplace('\\', '/', __DIR__);
+                $webPathLoc = stripos($dir, 'vendor/yuanhang/easy-upload');
+                $webPath = substr($dir, 0, $webPathLoc);
+                if (file_exists($webPath . 'EasyUpload/Config.php')) {
+                    $config = require $webPath . 'EasyUpload/Config.php';
+                    if (!is_array($config)) {
+                        throw new Exception('The configuration file is not an array, the file is in "' . $webPath . 'EasyUpload/Config.php"');
+                    }
+                } else if (file_exists($webPath . 'config/EasyUpload.php')) {
+                    $config = require $webPath . 'config/EasyUpload.php';
+                    if (!is_array($config)) {
+                        throw new Exception('The configuration file is not an array, the file is in "' . $webPath . 'config/EasyUpload.php"');
+                    }
+                } else {
+                    // 默认配置
+                    $defConf = Config::def();
+                    $config = $defConf;
+                }
+            }
+        }
+        if (is_array($config)) {
+            $config = Config::arrToObj($config);
+        }
+        return $config;
+    }
+
+    /**
+     * @desc: 获取配置文件目录
+     * @return string[]
+     */
+    public static function getConfigPath(): array
+    {
+        $dir = str_ireplace('\\', '/', __DIR__);
+        $webPathLoc = stripos($dir, 'vendor/yuanhang/easy-upload');
+        $webPath = substr($dir, 0, $webPathLoc);
+        return [
+            $webPath . 'EasyUpload/Config.php',
+            $webPath . 'config/EasyUpload.php'
+        ];
     }
 
     /**

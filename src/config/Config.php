@@ -87,7 +87,7 @@ class Config
         ]
     ];
 
-    public static function arrToObj(array $conf)
+    public static function arrToObj(array $conf): ConfigStruct
     {
         return self::def($conf);
     }
