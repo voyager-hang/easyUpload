@@ -1,5 +1,4 @@
-
-整合阿里云Oss，七牛云上传，兼容Thinkphp5.1：
+GitHub:[整合阿里云Oss，七牛云上传，兼容Thinkphp5.1](https://github.com/mygithub-hang/easyUpload)
 
 + 文件大小验证
 + 文件Mime类型验证
@@ -12,108 +11,112 @@
 
 
 > V1.*.*版本 运行环境要求PHP5.6+，七牛sdk7.3+，ossSdk2.3+。
-> 
+>
 > V2+版本 运行环境要求PHP7.4+，七牛sdk7.3+，ossSdk2.3+。
 
 
-## 安装
+>安装
 
 使用composer安装
 
-~~~
+```php
 composer require yuanhang/easy-upload
-~~~
+```
 
-## 使用
+>使用
 
 设置配置
 
-~~~
-\EasyUpload\EasyUpload::Instance($config);
+```php
+\EasyUpload\EasyUpload::setConfig(array $config);
+\EasyUpload\EasyUpload::Instance();
 
 Thinkphp5.1可在配置目录建EasyUpload.php
 
+其他框架也可以自定义配置文件
+使用 ：\EasyUpload\EasyUpload::getConfigPath(); 获取配置文件位置
+然后根据位置新建文件即可
 示例文件：/src/example/Config.php
-~~~
+```
 
-获取实例
+>获取实例
 
-~~~
+```php
 $upload = \EasyUpload\EasyUpload::Instance();
-~~~
+```
 
-上传图片
-~~~
+>上传图片
+```php
 $res = $upload->imgUpload('form_name');
-~~~
+```
 
-上传文件
-~~~
+>上传文件
+```php
 $res = $upload->fileUpload('form_name');
-~~~
+```
 
-获取可访问地址
-~~~
+>获取可访问地址
+```php
 $upload->httpPath('/uploads/images/a.png');
 $upload->httpPath('http://www.a.com/uploads/a.png');
-~~~
+```
 
-把文件从临时目录移动到正式目录 (文件地址,是否图片,是否绝对路径)
-~~~
+>把文件从临时目录移动到正式目录 (文件地址,是否图片,是否绝对路径)
+```php
 $upload->moveTmpToPath('http://www.d.com/temp/a.png', true, false);
 $upload->httpPath('/temp/a.png',true,true);
-~~~
+```
 
-删除文件
-~~~
+>删除文件
+```php
 $upload->del('http://www.d.com/temp/a.png');
 $upload->del('/temp/a.png');
 $upload->del(['/temp/a.png','http://www.d.com/temp/a.png']);
-~~~
+```
 
-## 返回值
+# 返回值
 
-单文件上传成功
-~~~
+>单文件上传成功
+```php
  {
     "status": true,
     "success": "/temp/20210622/a.gif",
     "error": ""
  }
-~~~
+```
 
-单文件上传失败
-~~~
+>单文件上传失败
+```php
  {
     "status": false,
     "success": "",
     "error": "上传文件超过允许的最大值!"
  }
-~~~
+```
 
-多文件上传成功
-~~~
+>多文件上传成功
+```php
  {
     "status": true,
     "success": ["/temp/20210622/a.gif", "/temp/20210622/b.png"],
     "error": []
  }
-~~~
+```
 
-多文件上传失败
-~~~
+>多文件上传失败
+```php
  {
     "status": false,
     "success": [],
     "error": ["上传文件超过允许的最大值!", "上传文件超过允许的最大值!"]
  }
-~~~
+```
 
 ## 其他方法均以抛出异常方式返回
 
 ## 目录结构
 
-~~~
+```php
 src                      项目根目录
 ├─config                 默认配置目录
 │  ├─Config.php          默认配置文件
@@ -143,9 +146,9 @@ src                      项目根目录
 │
 ├─EasyUpload.php         项目入口工厂类 工厂模式获取实例
 │
-~~~
+```
 ## 配置文件示例
-~~~
+```php
 <?php
 return [
     //Mimes验证
@@ -223,4 +226,4 @@ return [
         'del_file_max_num' => '每次最多不能超过1000个',
     ]
 ];
-~~~
+```
