@@ -94,7 +94,8 @@ class EasyUpload
             }
         }
         if (is_array($config)) {
-            $config = Config::arrToObj($config);
+            Config::setCof($config);
+            $config = Config::def();
         }
         return $config;
     }
