@@ -2,10 +2,6 @@
     "name": "yuanhang/easy-upload",
     "description": "Integrate Qiniu and Ali OSS",
     "type": "library",
-    "keywords": [
-        "oss",
-        "qiniu"
-    ],
     "require": {
         "php": ">=7.4",
         "qiniu/php-sdk": ">=7.3",
@@ -14,7 +10,7 @@
     "license": "Apache-2.0",
     "autoload": {
         "psr-4": {
-            "EasyUpload\\": "src/"
+            "Yuanhang\\EasyUpload\\": "src/"
         }
     },
     "authors": [
