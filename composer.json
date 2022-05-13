@@ -1,6 +1,6 @@
 {
     "name": "yuanhang/easy-upload",
-    "description": "Integrate Qiniu and Ali OSS",
+    "description": "Integrate Qiniu and Ali OSS,Compatible with ThinkPhp 5,5.1,6 Laravel",
     "type": "library",
     "require": {
         "php": ">=7.4",
