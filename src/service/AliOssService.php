@@ -259,4 +259,12 @@ class AliOssService
         }
         return $path;
     }
+
+    /**获取oss实例
+     * @return OssClient
+     */
+    public function getOssClient(): OssClient
+    {
+        return self::$oss;
+    }
 }
