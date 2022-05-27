@@ -18,6 +18,7 @@ class EasyUpload
     private static SysUpload $sysUpload;
     private static QiNiuUpload $qnUpload;
     private static OssUpload $ossUpload;
+    private static string $uploadServer;
     private static $config;
 
     public static function setConfig(array $config)
@@ -35,6 +36,9 @@ class EasyUpload
     public static function Instance(bool $newObj = false)
     {
         $config = self::getConfig();
+        if (!empty(self::$uploadServer)) {
+            $config->setUploadServer(self::$uploadServer);
+        }
         //上传oss(阿里云oss)，server(服务器 默认)，qn(七牛)
         switch ($config->getUploadServer()) {
             case "oss":
@@ -49,11 +53,19 @@ class EasyUpload
         return $class;
     }
 
+    /**设置上传位置
+     * @param string $uploadServer
+     */
+    public static function setUploadServer(string $uploadServer)
+    {
+        self::$uploadServer = $uploadServer;
+    }
+
     /**
      * @desc: 获取配置
      * @return ConfigStruct
      */
-    private static function getConfig(): ConfigStruct
+    public static function getConfig(): ConfigStruct
     {
         $config = self::$config;
         if (empty($config) || !is_array($config)) {
