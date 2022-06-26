@@ -72,10 +72,14 @@ class EasyUpload
             $tpCof = '\think\facade\Config';
             $useMyConfigFile = true;
             if (class_exists($tpCof)) {
-                if (method_exists($tpCof, 'pull')) {
+                try {
                     $cof = $tpCof::pull('EasyUpload');
-                } else if (method_exists($tpCof, 'get')) {
-                    $cof = $tpCof::get('EasyUpload');
+                } catch (\Exception $e) {
+                    try {
+                        $cof = $tpCof::get('EasyUpload');
+                    } catch (\Exception $e) {
+                        $cof = null;
+                    }
                 }
                 if (!empty($cof)) {
                     Config::setCof($cof);
