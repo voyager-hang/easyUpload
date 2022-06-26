@@ -73,10 +73,10 @@ class EasyUpload
             $useMyConfigFile = true;
             if (class_exists($tpCof)) {
                 try {
-                    $cof = $tpCof::pull('EasyUpload');
+                    $cof = $tpCof::get('EasyUpload');
                 } catch (\Exception $e) {
                     try {
-                        $cof = $tpCof::get('EasyUpload');
+                        $cof = $tpCof::pull('EasyUpload');
                     } catch (\Exception $e) {
                         $cof = null;
                     }
