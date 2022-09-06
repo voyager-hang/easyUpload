@@ -1,4 +1,4 @@
-GitHub:[整合阿里云Oss，七牛云上传，兼容Thinkphp5.1](https://github.com/mygithub-hang/easyUpload)
+GitHub:[整合阿里云Oss，七牛云上传，兼容Thinkphp5.1](https://github.com/voyager-hang/easyUpload)
 
 + 文件大小验证
 + 文件Mime类型验证
